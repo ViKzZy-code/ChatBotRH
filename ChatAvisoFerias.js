@@ -22,9 +22,13 @@ client.on("ready", async () => {
   console.log("✅ Conectado ao WhatsApp! Iniciando envios...");
 
   for (const contato of contatos) {
-    let numeroFormatado = `55${contato.numero}@c.us`; // Adiciona código do Brasil (55)
-    let mensagem = `Prezado(a) Sr(a). ${contato.nome},\n\nBoa tarde ,\nSolicitamos que compareça ao setor de Recursos Humanos no horário da manhã para a assinatura do seu aviso de férias.`;
+        if (!contato.numero) {
+            console.warn(`⚠️ Pulando contato sem número: ${contato.nome}`);
+            continue;
+        }
 
+        const numeroFormatado = `55${contato.numero}@c.us`; // Adiciona código do Brasil (55)
+        const mensagem = `Prezado(a) Sr(a). ${contato.nome},\n\nBoa tarde,\nSolicitamos que compareça ao setor de Recursos Humanos no horário da manhã para a assinatura do seu aviso de férias.`;
     try {
       await client.sendMessage(numeroFormatado, mensagem);
       console.log(

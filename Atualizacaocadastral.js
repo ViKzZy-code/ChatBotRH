@@ -22,8 +22,13 @@ client.on('ready', async () => {
     console.log('✅ Conectado ao WhatsApp! Iniciando envios...');
 
     for (const contato of contatos) {
-        let numeroFormatado = `55${contato.numero}@c.us`; // Adiciona código do Brasil (55)
-        let mensagem = `Bom dia ${contato.nome},\n*Formulário de Informações Pessoais Atualização Cadastral RH-PMG*\n\nPor favor, preencha os campos abaixo:\nNome Completo:\n\nData de Nascimento:\nEndereço:\nEstado Civil:\nGrau de Instrução:\nTrocou algum documento com troca de emissão?\nNúmero de Dependentes:\nDeseja declarar alguma religião?\nEmail:`;
+        if (!contato.numero) {
+            console.warn(`⚠️ Pulando contato sem número: ${contato.nome}`);
+            continue;
+        }
+
+        const numeroFormatado = `55${contato.numero}@c.us`; // Adiciona código do Brasil (55)
+        const mensagem = `Bom dia ${contato.nome},\n*Formulário de Informações Pessoais Atualização Cadastral RH-PMG*\n\nPor favor, preencha os campos abaixo:\nNome Completo:\n\nData de Nascimento:\nEndereço:\nEstado Civil:\nGrau de Instrução:\nTrocou algum documento com troca de emissão?\nNúmero de Dependentes:\nDeseja declarar alguma religião?\nEmail:`;
 
         try {
             await client.sendMessage(numeroFormatado, mensagem);
